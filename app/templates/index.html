@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adrobot — Campaign Manager</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">A</div>
+                <span>Adrobot</span>
+            </div>
+
+            <div class="nav-label">WORKSPACE</div>
+
+            <nav>
+                <button class="nav-item active" data-page="campaigns">
+                    <span>▦</span> Campaigns
+                </button>
+                <button class="nav-item" data-page="create">
+                    <span>＋</span> Create Campaign
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="status-dot"></div>
+                <span>Keitaro connected</span>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <div class="breadcrumb">Workspace / <span id="breadcrumb">Campaigns</span></div>
+                    <h1 id="page-title">Campaigns</h1>
+                </div>
+
+                <button class="button button-primary" id="header-create">
+                    + New Campaign
+                </button>
+            </header>
+
+            <section id="campaigns-page" class="page">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Campaigns</div>
+                        <div class="stat-value" id="total-campaigns">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Active Campaigns</div>
+                        <div class="stat-value" id="active-campaigns">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Failed Campaigns</div>
+                        <div class="stat-value" id="failed-campaigns">0</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>All Campaigns</h2>
+                            <p>Manage your Keitaro campaigns and offers.</p>
+                        </div>
+                        <button class="button button-secondary" id="refresh-campaigns">
+                            Refresh
+                        </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Campaign</th>
+                                    <th>GEO</th>
+                                    <th>Offer ID</th>
+                                    <th>Keitaro ID</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="campaigns-table">
+                                <tr>
+                                    <td colspan="6" class="empty">Loading campaigns...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="create-page" class="page hidden">
+                <div class="panel form-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Create Campaign</h2>
+                            <p>Create a campaign with Google redirect and offer streams.</p>
+                        </div>
+                    </div>
+
+                    <form id="create-form">
+                        <div class="form-group">
+                            <label for="campaign-name">Campaign Name</label>
+                            <input
+                                id="campaign-name"
+                                type="text"
+                                placeholder="My Campaign"
+                                minlength="3"
+                                maxlength="255"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="country-code">GEO Country Code</label>
+                                <input
+                                    id="country-code"
+                                    type="text"
+                                    placeholder="DE"
+                                    maxlength="2"
+                                    pattern="[A-Za-z]{2}"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="offer-id">Keitaro Offer ID</label>
+                                <input
+                                    id="offer-id"
+                                    type="number"
+                                    min="1"
+                                    placeholder="4440"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <div id="create-error" class="message error hidden"></div>
+
+                        <button class="button button-primary" type="submit" id="create-submit">
+                            Create Campaign
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="editor-page" class="page hidden">
+                <div class="editor-back">
+                    <button class="text-button" id="back-to-campaigns">
+                        ← Back to campaigns
+                    </button>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2 id="editor-campaign-name">Campaign Offers</h2>
+                            <p id="editor-campaign-info"></p>
+                        </div>
+                        <span class="status active">Offer Editor</span>
+                    </div>
+
+                    <div class="offer-toolbar">
+                        <div>
+                            <h3>Campaign Offers</h3>
+                            <p>Manage offers and traffic distribution.</p>
+                        </div>
+
+                        <button class="button button-primary" id="show-add-offer">
+                            + Add Offer
+                        </button>
+                    </div>
+
+                    <form id="add-offer-form" class="add-offer-form hidden">
+                        <div class="form-group">
+                            <label for="new-offer-id">Keitaro Offer ID</label>
+                            <input
+                                id="new-offer-id"
+                                type="number"
+                                min="1"
+                                placeholder="Enter offer ID"
+                                required
+                            >
+                        </div>
+                        <button class="button button-primary" type="submit">
+                            Add
+                        </button>
+                        <button class="button button-secondary" type="button" id="cancel-add-offer">
+                            Cancel
+                        </button>
+                    </form>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Offer</th>
+                                    <th>Offer ID</th>
+                                    <th>Traffic Share (%)</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="offers-table">
+                                <tr>
+                                    <td colspan="5" class="empty">Loading offers...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="offer-footer">
+                        <div class="share-total">
+                            Total distribution: <strong id="share-total">0%</strong>
+                        </div>
+                        <button class="button button-primary" id="save-shares">
+                            Save Distribution
+                        </button>
+                    </div>
+
+                    <div id="editor-message" class="message hidden"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
